@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 import Order from "../database/models/order.model";
 import Event from "../database/models/event.model";
 
-export const CreateUser = async (user: CreateUserParams) => {
+export const createUser = async (user: CreateUserParams) => {
   try {
     await connectToDatabase();
 
