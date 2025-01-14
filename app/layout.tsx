@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Poppins } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -11,6 +12,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Evently",
   description: "A simple management app to create and manage events.",
+  icons: {
+    icon: "./favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -19,8 +23,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${poppins?.variable} antialiased`}>{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={`${poppins?.variable} antialiased`}>{children}</body>
+      </html>
+    </ClerkProvider>
   );
 }
