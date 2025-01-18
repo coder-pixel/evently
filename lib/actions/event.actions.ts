@@ -45,6 +45,7 @@ CreateEventParams) => {
     await connectToDatabase();
 
     const organizer = await User.findById(userId); // try to find the event organizer data
+    console.log({ organizer });
 
     if (!organizer) {
       throw new Error("Organizer not found!");
