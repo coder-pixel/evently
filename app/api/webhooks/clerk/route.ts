@@ -72,12 +72,40 @@ export async function POST(req: Request) {
     const newUser = await createUser(user);
     console.log({ newUser });
 
+    // if (newUser) {
+    //   await clerkClient.users.updateUserMetadata(id, {
+    //     publicMetadata: {
+    //       userId: newUser?._id,
+    //     },
+    //   });
+    // }
     if (newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
-        publicMetadata: {
-          userId: newUser?._id,
-        },
-      });
+      let retries = 10; // Number of retries
+      let userUpdated = false;
+
+      while (retries > 0 && !userUpdated) {
+        try {
+          // Fetch the latest user data
+          const clerkUser = await clerkClient.users.getUser(id);
+
+          if (clerkUser) {
+            await clerkClient.users.updateUserMetadata(id, {
+              publicMetadata: {
+                userId: newUser?._id,
+              },
+            });
+            userUpdated = true; // Exit loop once successful
+          }
+        } catch (err) {
+          console.error("Error updating publicMetadata, retrying...", err);
+          await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second
+          retries--;
+        }
+      }
+
+      if (!userUpdated) {
+        console.error("Failed to update publicMetadata after retries.");
+      }
     }
 
     return NextResponse.json({ message: "OK", user: newUser });
