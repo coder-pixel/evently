@@ -1,3 +1,4 @@
+import CheckoutButton from "@/components/shared/CheckoutButton";
 import Collection from "@/components/shared/Collection";
 import {
   getEventById,
@@ -6,6 +7,7 @@ import {
 import { formatDateTime } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const EventDetails = async ({
@@ -56,7 +58,7 @@ const EventDetails = async ({
               </div>
             </div>
 
-            {/* <CheckoutButton event={eventData} /> */}
+            <CheckoutButton event={eventData} />
 
             <div className="flex flex-col gap-5">
               <div className="flex gap-2 md:gap-3">
@@ -68,11 +70,9 @@ const EventDetails = async ({
                 />
                 <div className="p-medium-16 lg:p-regular-20 flex flex-wrap items-center">
                   <p>
-                    {formatDateTime(eventData?.startDateTime).dateOnly} -{" "}
-                    {formatDateTime(eventData?.startDateTime).timeOnly}
-                  </p>
-                  <p>
-                    {formatDateTime(eventData?.endDateTime).dateOnly} -{" "}
+                    {formatDateTime(eventData?.startDateTime).dateOnly}/{" "}
+                    {formatDateTime(eventData?.startDateTime).timeOnly} -{" "}
+                    {formatDateTime(eventData?.endDateTime).dateOnly}/{" "}
                     {formatDateTime(eventData?.endDateTime).timeOnly}
                   </p>
                 </div>
@@ -97,7 +97,13 @@ const EventDetails = async ({
                 {eventData?.description}
               </p>
               <p className="p-medium-16 lg:p-regular-18 truncate text-primary-500 underline">
-                {eventData?.url}
+                {eventData?.url ? (
+                  <Link href={eventData?.url} target="_blank">
+                    {eventData?.url}
+                  </Link>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
           </div>

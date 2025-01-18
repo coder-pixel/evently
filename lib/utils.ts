@@ -99,7 +99,27 @@ export function removeKeysFromQuery({
   );
 }
 
+// export const handleError = (error: unknown) => {
+//   console.error(error);
+//   throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+// };
+
 export const handleError = (error: unknown) => {
-  console.error(error);
-  throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  // Log the error for debugging
+  console.error("Error occurred:", error);
+
+  // Avoid throwing if `redirect` has already been called
+  if (typeof error === "string") {
+    throw new Error(error);
+  }
+
+  // Handle objects and other error types
+  try {
+    const errorMessage = JSON.stringify(error, null, 2); // Beautify the output
+    throw new Error(errorMessage);
+  } catch (stringifyError) {
+    // Fallback if JSON.stringify fails (e.g., cyclic structures)
+    console.log(stringifyError);
+    throw new Error("An unknown error occurred");
+  }
 };
