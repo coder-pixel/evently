@@ -10,7 +10,7 @@ import Checkout from "./Checkout";
 const CheckoutButton = ({ event }: { event: IEvent }) => {
   // can't use sessionClaims here to get 'userId', as it's a client compoonent
   const { user } = useUser();
-  const userId = user?.publicMetadata.userId as string;
+  const userId = user?.publicMetadata?.userId as string;
 
   const hasEventFinished = new Date(event?.endDateTime) < new Date();
 
