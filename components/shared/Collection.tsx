@@ -19,6 +19,7 @@ const Collection = ({
   emptyTitle,
   emptyStateSubtext,
   page,
+  limit,
   totalPages = 0,
   collectionType,
   urlParamName,
@@ -46,6 +47,7 @@ const Collection = ({
 
           {totalPages > 1 && (
             <Pagination
+              limit={limit}
               urlParamName={urlParamName}
               page={page}
               totalPages={totalPages}

@@ -7,11 +7,17 @@ import { formUrlQuery } from "@/lib/utils";
 
 type PaginationProps = {
   page: number | string;
+  limit: number;
   totalPages: number;
   urlParamName?: string;
 };
 
-const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
+const Pagination = ({
+  page,
+  limit = 10,
+  totalPages,
+  urlParamName,
+}: PaginationProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -26,6 +32,11 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
 
     router.push(newUrl, { scroll: false });
   };
+
+  // do not show pagination if totalCount is less than limit
+  if (totalPages < limit) {
+    return;
+  }
 
   return (
     <div className="flex gap-2">
